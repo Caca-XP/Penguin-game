@@ -9,8 +9,8 @@ const ctx = canvas.getContext('2d');
 // Constants
 const GAME_WIDTH = 800;
 const GAME_HEIGHT = 300;
-const PLAYER_WIDTH = 30*2;//60;
-const PLAYER_HEIGHT = 47*2;//94;
+const PLAYER_WIDTH = 30;
+const PLAYER_HEIGHT = 47;
 const MAX_JUMP_HEIGHT = GAME_HEIGHT - 150;
 const MIN_JUMP_HEIGHT = 100;
 const MIN_DIVE_HEIGHT = 100;
