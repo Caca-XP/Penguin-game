@@ -15,7 +15,8 @@ const MAX_JUMP_HEIGHT = GAME_HEIGHT - 150;
 const MIN_JUMP_HEIGHT = 100;
 const MIN_DIVE_HEIGHT = 100;
 const MAX_DIVE_HEIGHT = GAME_HEIGHT - 150;
-const GROUND_HEIGHT = 150;
+//NOTE: The ground height should be in the middle of the game
+const GROUND_HEIGHT = GAME_HEIGHT/2;
 
 
 // Game objects
@@ -29,7 +30,14 @@ let player= null;
  */
 function createSprites(){
     // calculate the scaled player width and height and the jump height
-    
+    const scaledPlayerWidth = PLAYER_WIDTH * screenScaleRatio;
+    const scaledPlayerHeight = PLAYER_HEIGHT * screenScaleRatio;
+    const scaledMaxJumpHeight = MAX_JUMP_HEIGHT * screenScaleRatio;
+    const scaledMinJumpHeight = MIN_JUMP_HEIGHT * screenScaleRatio;
+    const scaledMinDiveHeight = MIN_DIVE_HEIGHT * screenScaleRatio;
+    const scaledMaxDiveHeight = MAX_DIVE_HEIGHT * screenScaleRatio;
+    const scaledGroundHeight = GROUND_HEIGHT * screenScaleRatio;
+
     // create the player object
 
     // create the ground object
