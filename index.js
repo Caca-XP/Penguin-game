@@ -23,6 +23,16 @@ const GROUND_HEIGHT = 24;
 const GROUND_WIDTH = 2400;
 const GROUND_AND_OBSTACLE_SPEED = 0.5;
 
+//Array of iceberg objects
+//for each object:
+//width, height, path to image
+const ICEBERG_CONFIG = [
+    {width: 100, height: 200, image: 'images/iceberg1.png'},
+    {width: 100, height: 200, image: 'images/iceberg2.png'},
+    {width: 75, height: 155, image: 'images/iceberg3.png'},
+
+]
+
 
 const GAME_SPEED_START = 0.5;
 const GAME_SPEED_INCREASE = 0.00001;
@@ -31,6 +41,7 @@ const GAME_SPEED_INCREASE = 0.00001;
 // Game objects
 let player= null;
 let ground = null;
+let obstacleController = null;
 
 // Game variables
 let gameSpeed = GAME_SPEED_START;
@@ -58,9 +69,17 @@ function createSprites(){
     ground = new Ground(ctx, scaledGroundWidth, scaledGroundHeight, GROUND_AND_OBSTACLE_SPEED, screenScaleRatio);
 
     // create the obstacles array map
-
+    const icebergImages = ICEBERG_CONFIG.map(iceberg => {
+        const image = new Image();
+        image.src = iceberg.image;
+        return{
+            width: iceberg.width * screenScaleRatio,
+            height: iceberg.height * screenScaleRatio,
+            image: image
+        };
+    });
     // create obstacle Controller object
-
+    obstacleController = new ObstacleController(ctx, icebergImages, screenScaleRatio, GROUND_AND_OBSTACLE_SPEED);
     // create the score object
 }
 
@@ -147,7 +166,9 @@ function clearScreen(){
     // fill style
     ctx.fillStyle = 'white';
     // fill rect
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.fillRect(0, 0, canvas.width, GAME_HEIGHT*screenScaleRatio/2);
+    ctx.fillStyle = 'skyblue';//change the colour later
+    ctx.fillRect(0, GAME_HEIGHT*screenScaleRatio/2, canvas.width, GAME_HEIGHT*screenScaleRatio/2);
 }
 
 /**
@@ -170,9 +191,11 @@ function gameLoop(currentTime){
 
     // Update game objects
     ground.update(gameSpeed, frameTime);
+    obstacleController.update(gameSpeed, frameTime);
     player.update(gameSpeed, frameTime);
 
     ground.draw();
+    obstacleController.draw();
     player.draw();
 
     // Draw game objects

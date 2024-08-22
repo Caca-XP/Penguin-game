@@ -12,6 +12,13 @@ export default class Iceberg {
      */
     constructor(ctx, x, y, width, height, image){
         // initialize the iceberg properties
+        this.ctx = ctx;
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
+        this.image = image;
+
     }
 
     /**
@@ -22,13 +29,16 @@ export default class Iceberg {
      * @param {number} scaleRatio
      */
     update(speed, gameSpeed, frameTimeDelta, scaleRatio){
-        // iceberg update position
+        // update the iceberg position
+        this.x -= speed * gameSpeed * frameTimeDelta * scaleRatio;
+        
     }
 
     /**
      * Method to draw the iceberg image
      */
     draw(){
+        this.ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
         // draw the iceberg image
     }
 
