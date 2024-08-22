@@ -25,11 +25,11 @@ const GROUND_AND_OBSTACLE_SPEED = 0.5;
 
 //Array of iceberg objects
 //for each object:
-//width, height, path to image
+//width, height, midpoint from the bottom path to image
 const ICEBERG_CONFIG = [
-    {width: 100, height: 200, image: 'images/iceberg1.png'},
-    {width: 100, height: 200, image: 'images/iceberg2.png'},
-    {width: 75, height: 155, image: 'images/iceberg3.png'},
+    {width: 100, height: 200, midpoint: 131, image: 'images/iceberg1.png'},
+    {width: 100, height: 200, midpoint: 69, image: 'images/iceberg2.png'},
+    {width: 75, height: 155, midpoint: 50, image: 'images/iceberg3.png'},
 
 ]
 
@@ -74,6 +74,7 @@ function createSprites(){
         image.src = iceberg.image;
         return{
             width: iceberg.width * screenScaleRatio,
+            midpoint: iceberg.midpoint * screenScaleRatio,
             height: iceberg.height * screenScaleRatio,
             image: image
         };

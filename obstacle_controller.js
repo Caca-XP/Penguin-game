@@ -62,7 +62,7 @@ export default class ObstacleController {
         const icebergImage = this.icebergImages[randomIndex];
         // set the obstacle position
         const x = this.canvas.width*1.5;//draws the obstacle off screen
-        const y = this.canvas.height - icebergImage.height;
+        const y = this.canvas.height/2 + 5 - icebergImage.midpoint;
 
         const iceberg = new Iceberg(this.ctx, x, y, icebergImage.width, icebergImage.height, icebergImage.image);
         // push the obstacle to the obstacle array
