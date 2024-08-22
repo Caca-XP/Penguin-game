@@ -39,6 +39,7 @@ function createSprites(){
     const scaledGroundHeight = GROUND_HEIGHT * screenScaleRatio;
 
     // create the player object
+    player = new Player(ctx, scaledPlayerWidth, scaledPlayerHeight, scaledMinJumpHeight, scaledMaxJumpHeight, scaledMinDiveHeight, scaledMaxDiveHeight, scaledGroundHeight, screenScaleRatio);
 
     // create the ground object
 

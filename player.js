@@ -18,6 +18,12 @@ export default class Player {
     JUMP_SPEED = 0.6;
     GRAVITY = 0.4;
 
+    swimingUp = false;
+    divePressed = false;
+    diveInProgress = false;
+    DIVE_SPEED = 0.6;
+    BOUYANCY = 0.4;
+
     /**
      * Constructor
      * initialize the player and its properties (position, speed, image)
@@ -28,7 +34,7 @@ export default class Player {
      * @param {number} maxJumpHeight
      * @param {number} scaleRatio
      */
-    constructor(ctx, width, height, minJumpHeight, maxJumpHeight, scaleRatio){
+    constructor(ctx, width, height, minJumpHeight, maxJumpHeight, minDiveHeight, maxDiveHeight, scaleRatio){
         // initialize the player properties
         this.ctx = ctx;
         this.canvas = ctx.canvas;
@@ -86,14 +92,20 @@ export default class Player {
     }
 
     keydown = (event) => {
-        if (event.code ==='Space' || event.code === 'ArrowUp'){
+        if (event.code ==='Space' || event.code === 'ArrowUp' || event.code === 'KeyW'){
             this.jumpPressed = true;
+        }
+        if (event.code === 'ArrowDown' || event.code === 'KeyS'){
+            this.divePressed = true;
         }
     }
 
     keyup = (event) => {
-        if (event.code ==='Space' || event.code === 'ArrowUp'){
+        if (event.code ==='Space' || event.code === 'ArrowUp' || event.code === 'KeyW'){
             this.jumpPressed = false;
+        }
+        if (event.code === 'ArrowDown' || event.code === 'KeyS'){
+            this.divePressed = false;
         }
     }
 
@@ -108,6 +120,9 @@ export default class Player {
 
         // player jumping update
         this.jump(frameTimeDelta);
+
+        // player diving update
+        this.dive(frameTimeDelta);
 
     }
 
@@ -151,6 +166,41 @@ export default class Player {
 
 
         // end the progress
+    }
+
+    dive(frameTimeDelta){
+        // player diving logic
+        if(this.divePressed){
+            this.diveInProgress = true;
+        }
+
+        // when in progress and not swimming up
+        if (this.diveInProgress && !this.swimingUp){
+            // this means the player is increasing in height
+            // when the player reaches the min dive height or the max dive height, the player will start swimming up
+            if (this.y < this.canvas.height - this.minJumpHeight || (this.y < this.canvas.height - this.maxJumpHeight && this.divePressed)){
+                this.y += this.DIVE_SPEED * frameTimeDelta * this.scaleRatio;
+                this.image = this.southEastImage;
+            } else {
+                this.swimingUp = true;
+            }
+
+        }
+
+        // when in progress and swimming up
+        if (this.diveInProgress && this.swimingUp){
+            // this means the player is swimming up
+            // when the player reaches the ground, the player will stop swimming up
+            if (this.y > this.initialY){
+                this.y -= this.BOUYANCY * frameTimeDelta * this.scaleRatio;
+                this.image = this.northEastImage;
+            } else {
+                this.y = this.initialY;
+                this.diveInProgress = false;
+                this.swimingUp = false;
+            }
+        }
+
     }
 
     /**
