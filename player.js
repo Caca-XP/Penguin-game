@@ -41,6 +41,7 @@ export default class Player {
         // player position
         this.x = this.width * this.scaleRatio + 10 * this.scaleRatio;
         this.y = this.canvas.height/2 - this.height * this.scaleRatio;
+        this.initialY = this.y;
 
         // player image
         this.standingStillImage = new Image(); 
@@ -124,7 +125,7 @@ export default class Player {
         if (this.jumpInProgress && !this.falling){
             // this means the player is increasing in height
             // when the player reaches the min jump height or the max jump height, the player will start falling
-            if (this.y < this.minJumpHeight || (this.y < this.maxJumpHeight && this.jumpInProgress)){
+            if (this.y > this.canvas.height - this.minJumpHeight || (this.y > this.canvas.height - this.maxJumpHeight && this.jumpPressed)){
                 this.y -= this.JUMP_SPEED * frameTimeDelta * this.scaleRatio;
                 this.image = this.northEastImage;
             } else {
@@ -138,11 +139,11 @@ export default class Player {
         if (this.jumpInProgress && this.falling){
             // this means the player is falling
             // when the player reaches the ground, the player will stop falling
-            if (this.y < this.canvas.height/2 - this.height * this.scaleRatio){
+            if (this.y < this.initialY){
                 this.y += this.GRAVITY * frameTimeDelta * this.scaleRatio;
                 this.image = this.southEastImage;
             } else {
-                this.y = this.canvas.height/2 - this.height * this.scaleRatio;
+                this.y = this.initialY;
                 this.jumpInProgress = false;
                 this.falling = false;
             }
@@ -160,12 +161,12 @@ export default class Player {
     run(gameSpeed, frameTimeDelta){
         // player running logic
         // alterate the player image for running
-        this.animationTimer -= frameTimeDelta * gameSpeed;
         if (this.animationTimer <= 0){
             this.animationTimer = this.ANIMATION_TIMER;
             this.image = this.swimmingImages[0];
             this.swimmingImages.push(this.swimmingImages.shift());
         }
+        this.animationTimer -= frameTimeDelta * gameSpeed;
 
     }
 
@@ -175,6 +176,6 @@ export default class Player {
      */
     draw(){
         // draw the player on the ctx
-        this.ctx.drawImage(this.image, this.x, this.y, this.width * this.scaleRatio, this.height * this.scaleRatio);
+        this.ctx.drawImage(this.image, this.x, this.y, this.width , this.height);
     }
 }
