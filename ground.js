@@ -20,7 +20,7 @@ export default class Ground {
 
         // ground position
         this.x = 0;
-        this.y = this.canvas.height - this.height;
+        this.y = this.canvas.height/2 - this.height/2;
 
         // ground image
         this.image = new Image(); 

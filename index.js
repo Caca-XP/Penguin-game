@@ -1,6 +1,10 @@
 /*
 Import the required classes
 */
+import Player from './player.js';
+import Ground from './ground.js';
+import ObstacleController from './obstacle_controller.js';
+
 
 // Get the canvas and ctx
 const canvas = document.getElementById('game');
@@ -15,14 +19,21 @@ const MAX_JUMP_HEIGHT = GAME_HEIGHT - 150;
 const MIN_JUMP_HEIGHT = 100;
 const MIN_DIVE_HEIGHT = 100;
 const MAX_DIVE_HEIGHT = GAME_HEIGHT - 150;
-//NOTE: The ground height should be in the middle of the game
-const GROUND_HEIGHT = GAME_HEIGHT/2;
+const GROUND_HEIGHT = 24;
+const GROUND_WIDTH = 2400;
+const GROUND_AND_OBSTACLE_SPEED = 0.5;
+
+
+const GAME_SPEED_START = 0.5;
+const GAME_SPEED_INCREASE = 0.00001;
 
 
 // Game objects
 let player= null;
+let ground = null;
 
 // Game variables
+let gameSpeed = GAME_SPEED_START;
 
 
 /**
@@ -37,11 +48,14 @@ function createSprites(){
     const scaledMinDiveHeight = MIN_DIVE_HEIGHT * screenScaleRatio;
     const scaledMaxDiveHeight = MAX_DIVE_HEIGHT * screenScaleRatio;
     const scaledGroundHeight = GROUND_HEIGHT * screenScaleRatio;
+    const scaledGroundWidth = GROUND_WIDTH * screenScaleRatio;
+
 
     // create the player object
-    player = new Player(ctx, scaledPlayerWidth, scaledPlayerHeight, scaledMinJumpHeight, scaledMaxJumpHeight, scaledMinDiveHeight, scaledMaxDiveHeight, scaledGroundHeight, screenScaleRatio);
+    player = new Player(ctx, scaledPlayerWidth, scaledPlayerHeight, scaledMinJumpHeight, scaledMaxJumpHeight, scaledMinDiveHeight, scaledMaxDiveHeight, screenScaleRatio);
 
     // create the ground object
+    ground = new Ground(ctx, scaledGroundWidth, scaledGroundHeight, GROUND_AND_OBSTACLE_SPEED, screenScaleRatio);
 
     // create the obstacles array map
 
@@ -59,6 +73,9 @@ function setScreen(){
     screenScaleRatio = getScaleRatio();// get the screen scale ratio
     canvas.width = GAME_WIDTH * screenScaleRatio; // set the canvas width
     canvas.height = GAME_HEIGHT * screenScaleRatio; // set the canvas height
+
+    // create sprites
+    createSprites();
 }
 
 // use setScreen method to set the screen size
@@ -75,10 +92,10 @@ function getScaleRatio(){
     const screenHeight = Math.min(window.innerHeight, document.documentElement.clientHeight);
     const screenWidth = Math.min(window.innerWidth, document.documentElement.clientWidth);
     // calculate whether the window is wider than game width
-    console.log(screenHeight);
-        console.log(screenWidth);
-        console.log(screenHeight/GAME_HEIGHT);
-        console.log(screenWidth/GAME_WIDTH);
+    // console.log(screenHeight);
+    //     console.log(screenWidth);
+    //     console.log(screenHeight/GAME_HEIGHT);
+    //     console.log(screenWidth/GAME_WIDTH);
     if (screenHeight/screenWidth < GAME_WIDTH/GAME_HEIGHT){// if true: window is wider than game width
         return screenWidth/GAME_WIDTH; // return the width scale ratio
     } else{
@@ -117,8 +134,9 @@ function showStartScreen(){
 /**
  * Method to increase the game speed
  */
-function updateGameSpeed(){
+function updateGameSpeed(frameTimeDelta){
     // increase the game speed
+    gameSpeed += GAME_SPEED_INCREASE * frameTimeDelta;
 }
 
 
@@ -151,8 +169,11 @@ function gameLoop(currentTime){
     previousTime = currentTime;
 
     // Update game objects
+    ground.update(gameSpeed, frameTime);
+    player.update(gameSpeed, frameTime);
 
-
+    ground.draw();
+    player.draw();
 
     // Draw game objects
     requestAnimationFrame(gameLoop);

@@ -42,11 +42,13 @@ export default class Player {
         this.height = height;
         this.minJumpHeight = minJumpHeight;
         this.maxJumpHeight = maxJumpHeight;
+        this.minDiveHeight = minDiveHeight;
+        this.maxDiveHeight = maxDiveHeight;
         this.scaleRatio = scaleRatio;
 
         // player position
-        this.x = this.width * this.scaleRatio + 10 * this.scaleRatio;
-        this.y = this.canvas.height/2 - this.height * this.scaleRatio;
+        this.x = 20 * this.scaleRatio;
+        this.y = this.canvas.height/2 - this.height + 1.5 * this.scaleRatio;
         this.initialY = this.y;
 
         // player image
@@ -57,13 +59,14 @@ export default class Player {
         const swim1 = new Image();
         swim1.src = './images/peng-swim1.png';
         const swim2 = new Image();
-        swim2.src = './images/peng-E.png';
+        swim2.src = './images/peng-swim.png';
         const swim3 = new Image();
         swim3.src = './images/peng-swim2.png';
 
         this.swimmingImages.push(swim1);
         this.swimmingImages.push(swim2);
         this.swimmingImages.push(swim3);
+        this.swimmingImages.push(swim2);
         
         this.northEastImage = new Image();
         this.northEastImage.src = './images/peng-NE.png';
@@ -140,7 +143,7 @@ export default class Player {
         if (this.jumpInProgress && !this.falling){
             // this means the player is increasing in height
             // when the player reaches the min jump height or the max jump height, the player will start falling
-            if (this.y > this.canvas.height - this.minJumpHeight || (this.y > this.canvas.height - this.maxJumpHeight && this.jumpPressed)){
+            if (this.y > this.canvas.height/2 - this.minJumpHeight || (this.y > this.canvas.height/2 - this.maxJumpHeight && this.jumpPressed)){
                 this.y -= this.JUMP_SPEED * frameTimeDelta * this.scaleRatio;
                 this.image = this.northEastImage;
             } else {
@@ -168,6 +171,10 @@ export default class Player {
         // end the progress
     }
 
+    /**
+     * Method to handle the player dive
+     * @param {number} frameTimeDelta
+     */
     dive(frameTimeDelta){
         // player diving logic
         if(this.divePressed){
@@ -178,7 +185,7 @@ export default class Player {
         if (this.diveInProgress && !this.swimingUp){
             // this means the player is increasing in height
             // when the player reaches the min dive height or the max dive height, the player will start swimming up
-            if (this.y < this.canvas.height - this.minJumpHeight || (this.y < this.canvas.height - this.maxJumpHeight && this.divePressed)){
+            if (this.y < this.canvas.height/2 + this.minDiveHeight || (this.y < this.canvas.height/2 + this.maxDiveHeight && this.divePressed)){
                 this.y += this.DIVE_SPEED * frameTimeDelta * this.scaleRatio;
                 this.image = this.southEastImage;
             } else {
@@ -225,7 +232,8 @@ export default class Player {
      * Method to draw the player on the canvas
      */
     draw(){
+
         // draw the player on the ctx
-        this.ctx.drawImage(this.image, this.x, this.y, this.width , this.height);
+        this.ctx.drawImage(this.image, this.x, this.y, (this.image.width * this.scaleRatio) , (this.image.height * this.scaleRatio));
     }
 }
