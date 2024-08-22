@@ -20,10 +20,12 @@ export default class Ground {
 
         // ground position
         this.x = 0;
-        this.y = this.canvas.height - this.height * this.scaleRatio;
+        this.y = this.canvas.height - this.height;
 
         // ground image
-        this.image = new Image(); // update once the ground image is available
+        this.image = new Image(); 
+        this.image.src = './images/sea-ground.png';
+
     }
 
     /**
@@ -33,7 +35,7 @@ export default class Ground {
      */
     update(gameSpeed, frameTimeDelta){
         // ground update position
-        this.x -= this.speed * gameSpeed * frameTimeDelta;
+        this.x -= this.speed * gameSpeed * frameTimeDelta * this.scaleRatio;
     }
 
     /**
@@ -41,13 +43,13 @@ export default class Ground {
      */
     draw(){
         // draw the ground image
-        this.ctx.drawImage(this.image, this.x, this.y, this.width * this.scaleRatio, this.height * this.scaleRatio);
+        this.ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
 
         // draw the ground image again to fill the gap
-        this.ctx.drawImage(this.image, this.x + this.width * this.scaleRatio, this.y, this.width * this.scaleRatio, this.height * this.scaleRatio);
+        this.ctx.drawImage(this.image, this.x + this.width, this.y, this.width, this.height);
 
         // if the ground is at the end of the screen, go back to the start position
-        if (this.x <= -this.width * this.scaleRatio){
+        if (this.x <= -this.width){
             this.x = 0;
         }
     }
