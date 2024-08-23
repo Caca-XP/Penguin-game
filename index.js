@@ -54,6 +54,7 @@ let obstacleController = null;
 let gameSpeed = GAME_SPEED_START;
 let gameOver = false;
 let hasAddedEventListenersForRestart = false;
+let waitingToStart = true;
 
 
 /**
@@ -156,8 +157,8 @@ function setupGameReset(){
         // delay the event listener to prevent the game from restarting immediately 
         setTimeout(() => {
             window.addEventListener("keyup", restartGame,{once:true});
-        window.addEventListener("touchstart", restartGame,{once:true});
-        window.addEventListener("keydown", restartGame,{once:true});
+            window.addEventListener("touchstart", restartGame,{once:true});
+            window.addEventListener("keydown", restartGame,{once:true});
         }, 1000);
 
     }
@@ -170,6 +171,7 @@ function restartGame(){
     // reset the game variables
     hasAddedEventListenersForRestart = false;
     gameOver = false;
+    waitingToStart = false;
     ground.reset();
     obstacleController.reset();
     gameSpeed = GAME_SPEED_START;
@@ -180,6 +182,12 @@ function restartGame(){
  */
 function showStartScreen(){
     // draw the start screen text
+    const fontSize = 40 * screenScaleRatio;
+    ctx.font = `${fontSize}px Pixelify Sans`;//CHANGE LATER
+    ctx.fillStyle = 'black';//CHANGE LATER
+    ctx.textAlign = 'center';
+    ctx.fillText('Tap Screen or Press Space to Start', canvas.width/2, canvas.height/4);
+
 }
 
 /**
@@ -221,7 +229,7 @@ function gameLoop(currentTime){
     
     previousTime = currentTime;
 
-    if (!gameOver){
+    if (!gameOver && !waitingToStart){
     // Update game objects
     ground.update(gameSpeed, frameTime);
     obstacleController.update(gameSpeed, frameTime);
@@ -241,6 +249,10 @@ function gameLoop(currentTime){
         setupGameReset();
     }
 
+    if (waitingToStart){
+        showStartScreen();
+    }
+
     // Draw game objects
     requestAnimationFrame(gameLoop);
 }
@@ -248,3 +260,7 @@ function gameLoop(currentTime){
 // requestAnimationFrame method to start the game loop
 requestAnimationFrame(gameLoop);
 // add event listener to start the game when the screen is touched or a key is pressed
+
+window.addEventListener("keyup", restartGame,{once:true});
+            window.addEventListener("touchstart", restartGame,{once:true});
+            window.addEventListener("keydown", restartGame,{once:true});
