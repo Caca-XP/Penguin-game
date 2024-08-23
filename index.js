@@ -4,6 +4,7 @@ Import the required classes
 import Player from './player.js';
 import Ground from './ground.js';
 import ObstacleController from './obstacle_controller.js';
+import Score from './score.js';
 
 
 // Set font
@@ -49,6 +50,7 @@ const GAME_SPEED_INCREASE = 0.00001;
 let player= null;
 let ground = null;
 let obstacleController = null;
+let score = null;
 
 // Game variables
 let gameSpeed = GAME_SPEED_START;
@@ -92,6 +94,7 @@ function createSprites(){
     // create obstacle Controller object
     obstacleController = new ObstacleController(ctx, icebergImages, screenScaleRatio, GROUND_AND_OBSTACLE_SPEED);
     // create the score object
+    score = new Score(ctx, screenScaleRatio);
 }
 
 let screenScaleRatio = 0;
@@ -175,6 +178,7 @@ function restartGame(){
     ground.reset();
     obstacleController.reset();
     gameSpeed = GAME_SPEED_START;
+    score.reset();
 }
 
 /**
@@ -230,19 +234,22 @@ function gameLoop(currentTime){
     previousTime = currentTime;
 
     if (!gameOver && !waitingToStart){
-    // Update game objects
-    ground.update(gameSpeed, frameTime);
-    obstacleController.update(gameSpeed, frameTime);
-    player.update(gameSpeed, frameTime);
+        // Update game objects
+        ground.update(gameSpeed, frameTime);
+        obstacleController.update(gameSpeed, frameTime);
+        player.update(gameSpeed, frameTime);
+        score.update(frameTime);
     }
 
     if (!gameOver && obstacleController.collide(player)){
         gameOver = true;
+        score.setHighScore();
     }
 
     ground.draw();
     obstacleController.draw();
     player.draw();
+    score.draw();
 
     if (gameOver){
         showGameOver();

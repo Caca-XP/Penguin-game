@@ -1,7 +1,9 @@
 export default class Score {
 
 
-    
+    score = 0; // initialize the score
+    HIGH_SCORE_KEY = 'highScore'; // key for local storage
+
     /**
      * Constructor
      * initialize the score
@@ -11,6 +13,9 @@ export default class Score {
 
     constructor(ctx, scaleRatio){
         // initialize the score properties
+        this.ctx = ctx;
+        this.canvas = ctx.canvas;
+        this.scaleRatio = scaleRatio;
     }
 
     /**
@@ -18,7 +23,7 @@ export default class Score {
      * @param {number} frameTimeDelta
      */
     update(frameTimeDelta){
-
+        this.score += frameTimeDelta * this.scaleRatio;
     }
 
     /**
@@ -26,6 +31,7 @@ export default class Score {
      */
     reset(){
         // reset the score
+        this.score = 0;
     }
 
     /**
@@ -33,15 +39,36 @@ export default class Score {
      */
     setHighScore(){
         // check from local storage if the high score is set
+        const highScore = Number(localStorage.getItem(this.HIGH_SCORE_KEY));
 
         // set the high score if current score is higher
+        if (this.score > highScore){
+            localStorage.setItem(this.HIGH_SCORE_KEY, Math.floor(this.score));
+        }
     }
 
     /**
      * Method to draw the score
      */
     draw(){
+        // draw the high score
+        const highScore = Number(localStorage.getItem(this.HIGH_SCORE_KEY));
+        this.y = 20 * this.scaleRatio;
+
+        const fontSize = 20 * this.scaleRatio;
+        this.ctx.font = `${fontSize}px Pixelify Sans`;
+        this.ctx.fillStyle = '#525250';
+
         // draw the score
+        const scoreX = this.canvas.width - 75 * this.scaleRatio;
+        const highScoreX = scoreX - 125 * this.scaleRatio;
+
+        const scorePadded = Math.floor(this.score).toString().padStart(6, '0');
+        const highScorePadded = highScore.toString().padStart(6, '0');
+
+        this.ctx.fillText(scorePadded, scoreX, this.y);
+        this.ctx.fillText(`HI: ${highScorePadded}`, highScoreX, this.y);
+
     }
 
 }
