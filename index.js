@@ -12,13 +12,13 @@ const ctx = canvas.getContext('2d');
 
 // Constants
 const GAME_WIDTH = 800;
-const GAME_HEIGHT = 300;
+const GAME_HEIGHT = 400;
 const PLAYER_WIDTH = 30;
 const PLAYER_HEIGHT = 47;
-const MAX_JUMP_HEIGHT = GAME_HEIGHT - 150;
+const MAX_JUMP_HEIGHT = GAME_HEIGHT - 200;
 const MIN_JUMP_HEIGHT = 100;
 const MIN_DIVE_HEIGHT = 100;
-const MAX_DIVE_HEIGHT = GAME_HEIGHT - 150;
+const MAX_DIVE_HEIGHT = GAME_HEIGHT - 200;
 const GROUND_HEIGHT = 24;
 const GROUND_WIDTH = 2400;
 const GROUND_AND_OBSTACLE_SPEED = 0.5;
@@ -46,6 +46,7 @@ let obstacleController = null;
 // Game variables
 let gameSpeed = GAME_SPEED_START;
 let gameOver = false;
+let hasAddedEventListenersForRestart = false;
 
 
 /**
@@ -129,6 +130,12 @@ function getScaleRatio(){
  */
 function showGameOver(){
     // draw the game over text
+    const fontSize = 70 * screenScaleRatio;
+    ctx.font = `${fontSize}px Arial`;//CHANGE LATER
+    ctx.fillStyle = 'black';//CHANGE LATER
+    ctx.textAlign = 'center';
+    ctx.fillText('Game Over', canvas.width/2, canvas.height/2);
+
 }
 
 /**
@@ -136,6 +143,17 @@ function showGameOver(){
  */
 function setupGameReset(){
     // add event listener to restart the game
+    if (!hasAddedEventListenersForRestart){
+        hasAddedEventListenersForRestart = true;
+
+        // delay the event listener to prevent the game from restarting immediately 
+        setTimeout(() => {
+            window.addEventListener("keyup", restartGame,{once:true});
+        window.addEventListener("touchstart", restartGame,{once:true});
+        window.addEventListener("keydown", restartGame,{once:true});
+        }, 1000);
+
+    }
 }
 
 /**
@@ -208,7 +226,7 @@ function gameLoop(currentTime){
 
     if (gameOver){
         showGameOver();
-        // setupGameReset();
+        setupGameReset();
     }
 
     // Draw game objects
