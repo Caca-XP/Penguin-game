@@ -117,6 +117,7 @@ export default class ObstacleController {
      */
     reset(){
         // reset the obstacle controller
+        this.icebergs = [];
     }
 
 }

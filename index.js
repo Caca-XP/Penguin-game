@@ -168,6 +168,11 @@ function setupGameReset(){
  */
 function restartGame(){
     // reset the game variables
+    hasAddedEventListenersForRestart = false;
+    gameOver = false;
+    ground.reset();
+    obstacleController.reset();
+    gameSpeed = GAME_SPEED_START;
 }
 
 /**
