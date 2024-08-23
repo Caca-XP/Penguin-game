@@ -138,7 +138,7 @@ function getScaleRatio(){
 function showGameOver(){
     // draw the game over text
     const fontSize = 70 * screenScaleRatio;
-    ctx.font = `${fontSize}px Arial`;//CHANGE LATER
+    ctx.font = `${fontSize}px Pixelify Sans`;//CHANGE LATER
     ctx.fillStyle = 'black';//CHANGE LATER
     ctx.textAlign = 'center';
     ctx.fillText('Game Over', canvas.width/2, canvas.height/2);
