@@ -143,7 +143,7 @@ function showGameOver(){
     // draw the game over text
     const fontSize = 70 * screenScaleRatio;
     ctx.font = `${fontSize}px Pixelify Sans`;//CHANGE LATER
-    ctx.fillStyle = 'black';//CHANGE LATER
+    ctx.fillStyle = 'gray';//CHANGE LATER
     ctx.textAlign = 'center';
     ctx.fillText('Game Over', canvas.width/2, canvas.height/2);
 
@@ -188,7 +188,7 @@ function showStartScreen(){
     // draw the start screen text
     const fontSize = 40 * screenScaleRatio;
     ctx.font = `${fontSize}px Pixelify Sans`;//CHANGE LATER
-    ctx.fillStyle = 'black';//CHANGE LATER
+    ctx.fillStyle = 'gray';//CHANGE LATER
     ctx.textAlign = 'center';
     ctx.fillText('Tap Screen or Press Space to Start', canvas.width/2, canvas.height/4);
 
