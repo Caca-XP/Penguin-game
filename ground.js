@@ -24,7 +24,7 @@ export default class Ground {
 
         // ground image
         this.image = new Image(); 
-        this.image.src = './images/sea-ground.png';
+        this.image.src = './images/sea.png';
 
     }
 
