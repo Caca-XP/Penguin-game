@@ -234,6 +234,6 @@ export default class Player {
     draw(){
 
         // draw the player on the ctx
-        this.ctx.drawImage(this.image, this.x, this.y, (this.image.width * this.scaleRatio) , (this.image.height * this.scaleRatio));
+        this.ctx.drawImage(this.image, this.x, this.y, (this.image.width * this.scaleRatio / 3) , (this.image.height * this.scaleRatio / 3));
     }
 }
