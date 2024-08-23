@@ -6,6 +6,13 @@ import Ground from './ground.js';
 import ObstacleController from './obstacle_controller.js';
 
 
+// Set font
+let myFont = new FontFace(
+    "Pixelify Sans",
+    "url('https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&display=swap')"
+  );
+
+
 // Get the canvas and ctx
 const canvas = document.getElementById('game');
 const ctx = canvas.getContext('2d');
