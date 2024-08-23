@@ -56,6 +56,7 @@ export default class Score {
         this.y = 20 * this.scaleRatio;
 
         const fontSize = 20 * this.scaleRatio;
+        this.ctx.font = `${fontSize}px Pixelify Sans`;
         this.ctx.fillStyle = '#525250';
 
         // draw the score
