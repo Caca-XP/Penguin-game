@@ -109,10 +109,7 @@ export default class ObstacleController {
      */
     collide(sprite){
         // check if the player collide with the obstacle
-
-        // return true if collided
-
-        // return false if not collided
+        return this.icebergs.some(iceberg => iceberg.collide(sprite));
     }
 
     /**

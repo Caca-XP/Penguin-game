@@ -45,6 +45,7 @@ let obstacleController = null;
 
 // Game variables
 let gameSpeed = GAME_SPEED_START;
+let gameOver = false;
 
 
 /**
@@ -190,14 +191,25 @@ function gameLoop(currentTime){
     
     previousTime = currentTime;
 
+    if (!gameOver){
     // Update game objects
     ground.update(gameSpeed, frameTime);
     obstacleController.update(gameSpeed, frameTime);
     player.update(gameSpeed, frameTime);
+    }
+
+    if (!gameOver && obstacleController.collide(player)){
+        gameOver = true;
+    }
 
     ground.draw();
     obstacleController.draw();
     player.draw();
+
+    if (gameOver){
+        showGameOver();
+        // setupGameReset();
+    }
 
     // Draw game objects
     requestAnimationFrame(gameLoop);
