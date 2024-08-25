@@ -47,16 +47,18 @@ export default class Iceberg {
      */
     collide(sprite){
         // check if the player collide with the iceberg
-        const adjustBy = 1.5;//adjust the collision box to make it more accurate
-        this.ctx.fillStyle = 'red';
-        this.ctx.fillRect((this.x + this.width/2), this.y, 10, this.height);
-        //figure out if the object is iceberg3
+         const adjustBy = 1.2;//adjust the collision box to make it more accurate
+
+        var hitboxWidth = this.x + this.width/2;
+        var hitboxHeight = this.y + this.height/adjustBy;
+        var hitboxX = this.x + this.width/4;
+        var hitboxY = this.y;
 
         if(
-            sprite.x < this.x + 5 + this.width/ adjustBy &&
-            sprite.x + sprite.width/adjustBy > this.x &&
-            sprite.y < this.y + 5 + this.height/ adjustBy &&
-            sprite.y + sprite.height/adjustBy > this.y
+            sprite.x < hitboxWidth &&
+            sprite.x + sprite.width/adjustBy > hitboxX &&
+            sprite.y < hitboxHeight &&
+            sprite.y + sprite.height/adjustBy > hitboxY
         ){
             return true;// return true if collided
 

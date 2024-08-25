@@ -232,7 +232,7 @@ function gameLoop(currentTime){
     const frameTime = currentTime - previousTime;
     
     previousTime = currentTime;
-
+    
     if (!gameOver && !waitingToStart){
         // Update game objects
         ground.update(gameSpeed, frameTime);
@@ -240,7 +240,7 @@ function gameLoop(currentTime){
         player.update(gameSpeed, frameTime);
         score.update(frameTime);
     }
-
+    
     if (!gameOver && obstacleController.collide(player)){
         gameOver = true;
         score.setHighScore();
