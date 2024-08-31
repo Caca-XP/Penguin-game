@@ -8,7 +8,7 @@ Unlimited run computer game with penguins
 
 ## Try the game:
 
-<!-- Link to game -->
+https://caca-xp.github.io/Penguin-game/
 
 ## How to Use
 The game will wait for an action to start.
