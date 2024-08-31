@@ -26,6 +26,11 @@ export default class Ground {
         this.image = new Image(); 
         this.image.src = './images/sea.png';
 
+        this.icePlatform = new Image();
+        this.icePlatform.src = './images/ice-platform.png';
+
+        this.platform_x = -50* this.scaleRatio;
+
     }
 
     /**
@@ -36,6 +41,7 @@ export default class Ground {
     update(gameSpeed, frameTimeDelta){
         // ground update position
         this.x -= this.speed * gameSpeed * frameTimeDelta * this.scaleRatio;
+        this.platform_x -= this.speed * gameSpeed * frameTimeDelta * this.scaleRatio;
     }
 
     /**
@@ -52,6 +58,8 @@ export default class Ground {
         if (this.x <= -this.width){
             this.x = 0;
         }
+
+        this.ctx.drawImage(this.icePlatform, this.platform_x, this.y - this.icePlatform.height * this.scaleRatio/2, this.icePlatform.width * this.scaleRatio, this.icePlatform.height * this.scaleRatio);
     }
 
     /**
@@ -60,6 +68,7 @@ export default class Ground {
     reset(){
         // reset the ground position
         this.x = 0;
+        this.platform_x = -50* this.scaleRatio;
     }
 
 }

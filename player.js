@@ -11,6 +11,8 @@ export default class Player {
     swimmingImages = [];
     northEastImage = null;
     southEastImage = null;
+    swimStraightImage = null;
+    swimDownImage = null;
 
     falling = false;
     jumpInProgress = false;
@@ -23,6 +25,8 @@ export default class Player {
     diveInProgress = false;
     DIVE_SPEED = 0.6;
     BOUYANCY = 0.4;
+
+    starting = true;
 
     /**
      * Constructor
@@ -50,6 +54,7 @@ export default class Player {
         this.x = 20 * this.scaleRatio;
         this.y = this.canvas.height/2 - this.height + 1.5 * this.scaleRatio;
         this.initialY = this.y;
+        this.startY = this.y;
 
         // player image
         this.standingStillImage = new Image(); 
@@ -60,8 +65,10 @@ export default class Player {
         swim1.src = './images/peng-swim1.png';
         const swim2 = new Image();
         swim2.src = './images/peng-swim.png';
+        this.swimStraightImage = swim2;
         const swim3 = new Image();
         swim3.src = './images/peng-swim2.png';
+        this.swimDownImage = swim3;
 
         this.swimmingImages.push(swim1);
         this.swimmingImages.push(swim2);
@@ -118,16 +125,44 @@ export default class Player {
      * @param {number} frameTimeDelta
      */
     update(gameSpeed, frameTimeDelta){
+        
         // player running update
         this.run(gameSpeed, frameTimeDelta);
-
-        // player jumping update
-        this.jump(frameTimeDelta);
-
-        // player diving update
-        this.dive(frameTimeDelta);
-
+        if (gameSpeed < 0.52){
+            // player starting update
+            this.start(gameSpeed);
+        } else {
+            // player jumping update
+            this.jump(frameTimeDelta);
+    
+            // player diving update
+            this.dive(frameTimeDelta);
+        }
     }
+
+
+    /**
+     * Method to handle the player starting
+     * Makes the player slide off the platform
+     * @param {number} gameSpeed
+     */
+    start(gameSpeed){
+        // starting animation of sliding off the platform
+        if (this.swimmingImages.includes(this.image)){
+            if (this.starting && gameSpeed < 0.51){
+                this.y = this.canvas.height/2 - this.height + 20 * this.scaleRatio;
+                this.image = this.swimStraightImage;
+            } else {
+                this.starting = false;
+                if (this.y < this.canvas.height/2 - this.height + 50 * this.scaleRatio){
+                    this.image = this.swimDownImage;
+                    this.y += 0.5 * this.scaleRatio;
+                    this.initialY = this.y;
+                }
+            }
+        }
+    }
+
 
     /**
      * Method to handle the player jump
@@ -236,4 +271,14 @@ export default class Player {
         // draw the player on the ctx
         this.ctx.drawImage(this.image, this.x, this.y, (this.image.width * this.scaleRatio / 3) , (this.image.height * this.scaleRatio / 3));
     }
+
+    /**
+     * Method to reset the player position
+     */
+    reset(){
+        this.image = this.standingStillImage;
+        this.starting = true;
+        this.y = this.startY;
+    }
+
 }

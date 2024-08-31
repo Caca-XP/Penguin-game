@@ -176,6 +176,7 @@ function restartGame(){
     gameOver = false;
     waitingToStart = false;
     ground.reset();
+    player.reset();
     obstacleController.reset();
     gameSpeed = GAME_SPEED_START;
     score.reset();
@@ -239,6 +240,7 @@ function gameLoop(currentTime){
         obstacleController.update(gameSpeed, frameTime);
         player.update(gameSpeed, frameTime);
         score.update(frameTime);
+        updateGameSpeed(frameTime);
     }
     
     if (!gameOver && obstacleController.collide(player)){
