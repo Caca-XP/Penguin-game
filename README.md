@@ -1,6 +1,7 @@
 # Penguin-game
 
 Unlimited run computer game with penguins
+![Penguin game preview](images/preview.png)
 
 ## Contributors
 - [NadiaPrasetyo](https://github.com/NadiaPrasetyo)
